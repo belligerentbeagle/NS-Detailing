@@ -9,9 +9,15 @@ from openpyxl.formatting.rule import ColorScaleRule, CellIsRule, FormulaRule
 
 workbook = Workbook()
 sheet = workbook.active
-
 sheet["A1"] = "TIME/NAME"
 alphabets = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+
+#initialise
+noofdays = int(input("Number of days mounting: "))
+if noofdays == 3:
+    status = "weekend"
+else:
+    status = "weekday"
 
 def assigning(row, duty):
     randomperson = random.randint(2, peoplepresent)
@@ -49,9 +55,19 @@ def countcellstoleft(row): #counter
             answer += 1
     return answer
 
+def hourscounter():
+    for i in range(2, peoplepresent+1):
+        counterhour = 0
+        for row in range(2, totalrows):
+            if sheet.cell(row=row, column = i).value != None:
+                counterhour += 1
+        sheet.cell(row=hoursrow, column = i).value = counterhour*2
+
+
+
+
 
 #set up time
-noofdays = int(input("Number of days mounting: "))
 row = 2
 timedefault = ["1100-1300", "1300-1500","1500-1700", "1700-1900","1900-2100", "2100-2300", "2300-0100","0100-0300", "0300-0500","0500-0700","0700-0900","0900-1100"]
 times = noofdays * timedefault
@@ -59,6 +75,8 @@ for timeblock in times:
     sheet.cell(row = row, column = 1).value = timeblock
     row += 1
 totalrows = row
+hoursrow = totalrows #dunnid to add one more because final interation of timeblock already adds 1 more.
+sheet.cell(row = hoursrow, column = 1).value = "TOTAL HOURS"
 
 #set up humans, minimum 19
 batch0 = ["Weijie","Max"] 
@@ -83,7 +101,6 @@ def colourthisrow(row,colour):
         cellcoordinate = columncoordinate + str(row)
         cell = sheet[cellcoordinate]
         cell.fill = PatternFill(start_color=colour, end_color=colour, fill_type = "solid")
-    
 
 
 #initialise duties
@@ -94,7 +111,6 @@ silent = [e for e in non_peak if e not in ('XSVC', 'XCBT')]
 #assign dutytypes to hours
 #nonpeak = 7, peak = 10, silent = 5
 row = 2 #reset row again
-status = "weekday" #to be variable
 print("planning....")
 
 for i in range(2, totalrows):
@@ -116,7 +132,9 @@ for i in range(2, totalrows):
             for duty in silent:
                 assigning(i,duty)
     sheet.cell(row=i, column= peoplepresent+1).value = countcellstoleft(i)
-            
+
+hourscounter()
+
 print("Done.")
 
 
