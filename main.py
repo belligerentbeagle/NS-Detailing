@@ -122,25 +122,61 @@ silent = [e for e in non_peak if e not in ('XSVC', 'XCBT')]
 row = 2 #reset row again
 print("planning....")
 
-for i in range(2, totalrows):
-    if i%2 == 0: #iterates across even rows only so that we assign duty every 4 hours
-        if status == "weekday" and (sheet.cell(row= i, column = 1).value in ["1100-1300", "1300-1500","1500-1700","1700-1900","0900-1100"]): #if non_peak on normal hours
-            for duty in non_peak:
-                assigning(i, duty)
-            #if cell is empty (leave, off, MA etc) then put into random
-        if status == "weekday" and (sheet.cell(row= i, column = 1).value in ["0700-0900"]):
-            colourthisrow(i,"ff0000")
-            for duty in peak:
-                assigningpeak(i,duty)
-            counter = 1 #function below for adding non-peak for 0900-1100
-            for duty in non_peak:
-                assigningafterpeak(counter,duty)
-        if status == "weekend" or (sheet.cell(row= i, column = 1).value in ["1900-2100","2100-2300","2300-0100","0100-0300","0300-0500","0500-0700"]):
-            colourthisrow(i,"808080")
-            colourthisrow(i+1,"808080")
-            for duty in silent:
-                assigning(i,duty)
-    sheet.cell(row=i, column= peoplepresent+1).value = countcellstoleft(i)
+if status == "weekday":
+    for i in range(2, totalrows):
+        if i%2 == 0: #iterates across even rows only so that we assign duty every 4 hours
+            if (sheet.cell(row= i, column = 1).value in ["1100-1300", "1300-1500","1500-1700","1700-1900","0900-1100"]): #if non_peak on normal hours
+                for duty in non_peak:
+                    assigning(i, duty)
+                #if cell is empty (leave, off, MA etc) then put into random
+            if (sheet.cell(row= i, column = 1).value in ["0700-0900"]):
+                colourthisrow(i,"ff0000")
+                for duty in peak:
+                    assigningpeak(i,duty)
+                counter = 1 #function below for adding non-peak for 0900-1100
+                for duty in non_peak:
+                    assigningafterpeak(counter,duty)
+            if (sheet.cell(row= i, column = 1).value in ["1900-2100","2100-2300","2300-0100","0100-0300","0300-0500","0500-0700"]):
+                colourthisrow(i,"808080")
+                colourthisrow(i+1,"808080")
+                for duty in silent:
+                    assigning(i,duty)
+        sheet.cell(row=i, column= peoplepresent+1).value = countcellstoleft(i)
+elif status == "weekend":
+    for i in range(2, totalrows):
+        if i%2 == 0: #iterates across even rows only so that we assign duty every 4 hours
+            if (sheet.cell(row= i, column = 1).value in ["1100-1300", "1300-1500","1500-1700","1700-1900","0900-1100"]): #if non_peak on normal hours
+                if i<=4 or i>=35:
+                    for duty in non_peak:
+                        assigning(i, duty)
+                    #if cell is empty (leave, off, MA etc) then put into random
+                else:
+                    colourthisrow(i,"808080")
+                    colourthisrow(i+1,"808080")
+                    for duty in silent:
+                        assigning(i,duty)
+            if (sheet.cell(row= i, column = 1).value in ["0700-0900"]):
+                if i>=35:
+                    colourthisrow(i,"ff0000")
+                    for duty in peak:
+                        assigningpeak(i,duty)
+                    counter = 1 #function below for adding non-peak for 0900-1100
+                    for duty in non_peak:
+                        assigningafterpeak(counter,duty)
+                else:
+                    colourthisrow(i,"808080")
+                    colourthisrow(i+1,"808080")
+                    for duty in silent:
+                        assigning(i,duty)
+            if (sheet.cell(row= i, column = 1).value in ["1900-2100","2100-2300","2300-0100","0100-0300","0300-0500","0500-0700"]):
+                colourthisrow(i,"808080")
+                colourthisrow(i+1,"808080")
+                for duty in silent:
+                    assigning(i,duty)
+        sheet.cell(row=i, column= peoplepresent+1).value = countcellstoleft(i)
+
+
+
 
 hourscounter()
 xinjiaolaojiaosystem()
