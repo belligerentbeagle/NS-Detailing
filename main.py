@@ -63,7 +63,16 @@ def hourscounter():
                 counterhour += 1
         sheet.cell(row=hoursrow, column = i).value = counterhour*2
 
-
+def xinjiaolaojiaosystem():
+    hoursranking = {}
+    for i in range(2, peoplepresent+1):
+        hours = sheet.cell(row=hoursrow, column = i).value
+        hoursranking[i] = hours
+    hoursranking = {k: v for k, v in sorted(hoursranking.items(), key=lambda item: item[1])}
+    columnorder = list(hoursranking.keys()) 
+    for i in range(len(team)-1):
+        sheet.cell(row=1, column=columnorder[i]).value = team[i]
+    return
 
 
 
@@ -134,7 +143,7 @@ for i in range(2, totalrows):
     sheet.cell(row=i, column= peoplepresent+1).value = countcellstoleft(i)
 
 hourscounter()
-
+xinjiaolaojiaosystem()
 print("Done.")
 
 
