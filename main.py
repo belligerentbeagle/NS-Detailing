@@ -20,7 +20,7 @@ else:
     status = "weekday"
 
 def assigning(row, duty):
-    randomperson = random.randint(2, peoplepresent)
+    randomperson = random.randint(2, peoplepresent+1)
     if row == 2: #if first row just put only
         if sheet.cell(row = row, column = randomperson).value == None:
             sheet.cell(row = row, column = randomperson).value = duty
@@ -35,7 +35,7 @@ def assigning(row, duty):
             assigning(row, duty)
 
 def assigningpeak(row, duty): #4hourblock 1 peak 1 non-peak
-    randomperson = random.randint(2, peoplepresent)
+    randomperson = random.randint(2, peoplepresent+1)
     if sheet.cell(row = row, column = randomperson).value == None and sheet.cell(row = row-1, column = randomperson).value == None:
         sheet.cell(row = row, column = randomperson).value = duty
     else:
@@ -50,13 +50,13 @@ def assigningafterpeak(counter,duty):
 
 def countcellstoleft(row): #counter
     answer = 0
-    for i in range(2, peoplepresent+1):
+    for i in range(2, peoplepresent+2):
         if sheet.cell(row= row, column= i).value != None:
             answer += 1
     return answer
 
 def hourscounter():
-    for i in range(2, peoplepresent+1):
+    for i in range(2, peoplepresent+2):
         counterhour = 0
         for row in range(2, totalrows):
             if sheet.cell(row=row, column = i).value != None:
@@ -65,7 +65,7 @@ def hourscounter():
 
 def xinjiaolaojiaosystem():
     hoursranking = {}
-    for i in range(2, peoplepresent+1):
+    for i in range(2, peoplepresent+2):
         hours = sheet.cell(row=hoursrow, column = i).value
         hoursranking[i] = hours
     hoursranking = {k: v for k, v in sorted(hoursranking.items(), key=lambda item: item[1])}
@@ -93,15 +93,29 @@ batch1 = ["Jack", "Ivan"]
 batch2 = ["Junyang", "Alvin", "Yicong", "Jowell", "Jonathan"]
 batch3 = ["Bala", "Jinming", "Eugene", "Jian Yong"]
 acf = ["Luke", "Ryan", "Stanley", "Yash"]
-batch4 = ["Rayshawn", "Kaijie"]
+batch4 = ["Rayshawn",]
 batch5 = ["Denver", "Praveen"]
-team = batch0 + batch1 + batch2 + batch3 + batch4 + batch5 + ["COUNTER"]
-peoplepresent = len(team)
-print("Number of people present is {} excluding 4 going to copper".format(str(peoplepresent-1))) 
+stayout = ["Kaijie"]
+team = batch0 + batch1 + batch2 + batch3 + batch4 + batch5 + stayout + ["COUNTER"]
+peoplepresent = len(team)-1
+print("Number of people present is {} excluding 4 going to copper".format(str(peoplepresent))) 
 column = 2
 for name in team:
     sheet.cell(row = 1, column = column).value = name
     column += 1
+
+def process_stayout_first():
+    stayoutcolumn = len(team)
+    for i in range(2, totalrows):
+        if status == "weekday" and (sheet.cell(row=i, column=1).value in ["1700-1900","1900-2100","2100-2300","2300-0100","0100-0300","0300-0500","0500-0700"]):
+            sheet.cell(row=i, column=stayoutcolumn).value = "STAYOUT"
+        if status == "weekend":
+            if i >= 5 and i <= totalrows-3:
+                sheet.cell(row=i, column=stayoutcolumn).value = "STAYOUT"
+process_stayout_first()
+
+#def leaveandoffs(who,whichdays):
+
 
 #colour coding
 def colourthisrow(row,colour):
@@ -141,7 +155,7 @@ if status == "weekday":
                 colourthisrow(i+1,"808080")
                 for duty in silent:
                     assigning(i,duty)
-        sheet.cell(row=i, column= peoplepresent+1).value = countcellstoleft(i)
+        sheet.cell(row=i, column= peoplepresent+2).value = countcellstoleft(i)
 elif status == "weekend":
     for i in range(2, totalrows):
         if i%2 == 0: #iterates across even rows only so that we assign duty every 4 hours
@@ -173,7 +187,7 @@ elif status == "weekend":
                 colourthisrow(i+1,"808080")
                 for duty in silent:
                     assigning(i,duty)
-        sheet.cell(row=i, column= peoplepresent+1).value = countcellstoleft(i)
+        sheet.cell(row=i, column= peoplepresent+2).value = countcellstoleft(i)
 
 
 
