@@ -11,6 +11,7 @@ workbook = Workbook()
 sheet = workbook.active
 
 sheet["A1"] = "TIME/NAME"
+alphabets = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 
 def assigning(row, duty):
     randomperson = random.randint(2, peoplepresent)
@@ -19,14 +20,12 @@ def assigning(row, duty):
             sheet.cell(row = row, column = randomperson).value = duty
             sheet.cell(row = row + 1, column = randomperson).value = duty #second half of duty
         else:
-            print("Replanning...")
             assigning(row, duty)
     else: #ensures they have rest before duty.
         if sheet.cell(row = row, column = randomperson).value == None and sheet.cell(row = row-1, column = randomperson).value == None:
             sheet.cell(row = row, column = randomperson).value = duty
             sheet.cell(row = row + 1, column = randomperson).value = duty #second half of duty
         else:
-            print("Replanning...")
             assigning(row, duty)
 
 def assigningpeak(row, duty): #4hourblock 1 peak 1 non-peak
@@ -34,7 +33,6 @@ def assigningpeak(row, duty): #4hourblock 1 peak 1 non-peak
     if sheet.cell(row = row, column = randomperson).value == None and sheet.cell(row = row-1, column = randomperson).value == None:
         sheet.cell(row = row, column = randomperson).value = duty
     else:
-        print("Replanning...")
         assigningpeak(row, duty)
 
 def assigningafterpeak(counter,duty):
@@ -44,7 +42,7 @@ def assigningafterpeak(counter,duty):
         counter += 1
         assigningafterpeak(counter,duty)
 
-def cellstoleftfilled(row): #counter
+def countcellstoleft(row): #counter
     answer = 0
     for i in range(2, peoplepresent+1):
         if sheet.cell(row= row, column= i).value != None:
@@ -62,8 +60,8 @@ for timeblock in times:
     row += 1
 totalrows = row
 
-#set up humans
-batch0 = ["Weijie","Maxx"]
+#set up humans, minimum 19
+batch0 = ["Weijie","Max"] 
 batch1 = ["Jack", "Ivan"]
 batch2 = ["Junyang", "Alvin", "Yicong", "Jowell", "Jonathan"]
 batch3 = ["Bala", "Jinming", "Eugene", "Jian Yong"]
@@ -72,17 +70,20 @@ batch4 = ["Rayshawn", "Kaijie"]
 batch5 = ["Denver", "Praveen"]
 team = batch0 + batch1 + batch2 + batch3 + batch4 + batch5 + ["COUNTER"]
 peoplepresent = len(team)
+print("Number of people present is {} excluding 4 going to copper".format(str(peoplepresent-1))) 
 column = 2
 for name in team:
     sheet.cell(row = 1, column = column).value = name
     column += 1
 
 #colour coding
-def colourthisrow(row):
-    col = sheet['A1']
-    col.fill = PatternFill(bgColor="00FF0000")
-    row = sheet.row_dimensions[1]
-    row.font = Font(underline="single")
+def colourthisrow(row,colour):
+    for i in range(0,len(team)+1): #+1 cuz need account for time and counter column
+        columncoordinate = alphabets[i]
+        cellcoordinate = columncoordinate + str(row)
+        cell = sheet[cellcoordinate]
+        cell.fill = PatternFill(start_color=colour, end_color=colour, fill_type = "solid")
+    
 
 
 #initialise duties
@@ -94,6 +95,7 @@ silent = [e for e in non_peak if e not in ('XSVC', 'XCBT')]
 #nonpeak = 7, peak = 10, silent = 5
 row = 2 #reset row again
 status = "weekday" #to be variable
+print("planning....")
 
 for i in range(2, totalrows):
     if i%2 == 0: #iterates across even rows only so that we assign duty every 4 hours
@@ -102,19 +104,20 @@ for i in range(2, totalrows):
                 assigning(i, duty)
             #if cell is empty (leave, off, MA etc) then put into random
         if status == "weekday" and (sheet.cell(row= i, column = 1).value in ["0700-0900"]):
-            print("planning peak hours...")
-            colourthisrow(i)
+            colourthisrow(i,"ff0000")
             for duty in peak:
                 assigningpeak(i,duty)
             counter = 1 #function below for adding non-peak for 0900-1100
             for duty in non_peak:
                 assigningafterpeak(counter,duty)
         if status == "weekend" or (sheet.cell(row= i, column = 1).value in ["1900-2100","2100-2300","2300-0100","0100-0300","0300-0500","0500-0700"]):
+            colourthisrow(i,"808080")
+            colourthisrow(i+1,"808080")
             for duty in silent:
                 assigning(i,duty)
-    sheet.cell(row=i, column= peoplepresent+1 ).value = cellstoleftfilled(i)
+    sheet.cell(row=i, column= peoplepresent+1).value = countcellstoleft(i)
             
-    
+print("Done.")
 
 
 
