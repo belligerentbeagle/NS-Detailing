@@ -6,6 +6,19 @@ from openpyxl.styles import NamedStyle, Font, Border, Side, PatternFill, colors,
 from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.formatting.rule import ColorScaleRule, CellIsRule, FormulaRule
 
+storagelocation = "/Users/weiyushit/OneDrive/Github stuff/NS Detailing/hello_world.xlsx" ##CHANGE EXCEL EXPORT LOCATION
+
+## CHANGE PEOPLE PRESENT
+batch0 = ["Aaron","Max","Nigel"] #["Weijie"] 
+batch1 = ["Jack", "Ivan"]
+batch2 = ["Junyang", "Yicong", "Jowell", "Jonathan"] #Alvin
+batch3 = ["Bala", "Jinming", "Eugene", "Jian Yong"]
+acf = ["Luke", "Ryan", "Stanley", "Yash"]
+batch4 = ["Rayshawn",]
+batch5 = ["Denver", "Praveen"]
+stayout = ["Kaijie"]
+
+
 
 workbook = Workbook()
 sheet = workbook.active
@@ -88,14 +101,6 @@ hoursrow = totalrows #dunnid to add one more because final interation of timeblo
 sheet.cell(row = hoursrow, column = 1).value = "TOTAL HOURS"
 
 #set up humans, minimum 19
-batch0 = ["Weijie","Max"] 
-batch1 = ["Jack", "Ivan"]
-batch2 = ["Junyang", "Alvin", "Yicong", "Jowell", "Jonathan"]
-batch3 = ["Bala", "Jinming", "Eugene", "Jian Yong"]
-acf = ["Luke", "Ryan", "Stanley", "Yash"]
-batch4 = ["Rayshawn",]
-batch5 = ["Denver", "Praveen"]
-stayout = ["Kaijie"]
 team = batch0 + batch1 + batch2 + batch3 + batch4 + batch5 + stayout + ["COUNTER"]
 peoplepresent = len(team)-1
 print("Number of people present is {} excluding 4 going to copper".format(str(peoplepresent))) 
@@ -197,31 +202,4 @@ xinjiaolaojiaosystem()
 print("Done.")
 
 
-
-
-
-
-
-
-workbook.save(filename="/Users/weiyushit/OneDrive/Github stuff/NS Detailing/hello_world.xlsx")
-
-
-
-
-
-'''
-whereami = os.getcwd()
-print(whereami)
-
-#changes directory for my excel
-os.chdir("/Users/weiyushit/OneDrive/Github stuff/NS Detailing")
-
-# List all files and directories in current directory -> print(os.listdir('.'))
-
-# Specify a writer
-writer = pd.ExcelWriter('example.xlsx', engine='openpyxl')
-file = 'example.xlsx'
-
-# Load spreadsheet
-xl = pd.ExcelFile(file)
-'''
+workbook.save(filename=storagelocation)
