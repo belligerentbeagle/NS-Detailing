@@ -7,11 +7,12 @@ from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.formatting.rule import ColorScaleRule, CellIsRule, FormulaRule
 
 storagelocation = "/Users/weiyushit/OneDrive/Github stuff/NS Detailing/hello_world.xlsx" ##CHANGE EXCEL EXPORT LOCATION
+# storagelocation = "hello_world.xlsx" #for mobile compiler
 
-## CHANGE PEOPLE PRESENT
-batch0 = ["Aaron","Max","Nigel"] #["Weijie"] 
+## CHANGE PEOPLE PRESENT #Absent
+batch0 = ["Aaron","Weijie"] #Max 
 batch1 = ["Jack", "Ivan"]
-batch2 = ["Junyang", "Yicong", "Jowell", "Jonathan"] #Alvin
+batch2 = ["Junyang", "Yicong", "Jowell", "Jonathan","Alvin"] 
 batch3 = ["Bala", "Jinming", "Eugene", "Jian Yong"]
 acf = ["Luke", "Ryan", "Stanley", "Yash"]
 batch4 = ["Rayshawn",]
