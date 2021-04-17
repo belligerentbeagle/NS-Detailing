@@ -19,6 +19,11 @@ batch4 = ["Rayshawn",]
 batch5 = ["Denver", "Praveen"]
 stayout = ["Kaijie"]
 
+#Off and Leave system #don't use if gone for whole mount. can just remove from array above
+whoandwhenpresent = { #[name:day_of_mount_gone]
+    'Aaron': [1,2],
+}
+
 
 
 workbook = Workbook()
@@ -121,7 +126,12 @@ def process_stayout_first():
 process_stayout_first()
 
 #def leaveandoffs(who,whichdays):
-
+for name in team:
+    if name in list(whoandwhenpresent.keys()):
+        for daynumber in whoandwhenpresent[name]:
+            print(name + " is on leave for day " + str(daynumber))
+            if daynumber == 1:
+                sheet.cell(row="person's row",column="person's column").value = "OFF/LL"
 
 #colour coding
 def colourthisrow(row,colour):
@@ -199,7 +209,7 @@ elif status == "weekend":
 
 
 hourscounter()
-xinjiaolaojiaosystem()
+#xinjiaolaojiaosystem()
 print("Done.")
 
 
