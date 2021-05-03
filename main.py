@@ -1,4 +1,3 @@
-import xlsxwriter
 import os
 from openpyxl import Workbook
 import random
@@ -125,13 +124,13 @@ def process_stayout_first():
                 sheet.cell(row=i, column=stayoutcolumn).value = "STAYOUT"
 process_stayout_first()
 
-#def leaveandoffs(who,whichdays):
-for name in team:
-    if name in list(whoandwhenpresent.keys()):
-        for daynumber in whoandwhenpresent[name]:
-            print(name + " is on leave for day " + str(daynumber))
-            if daynumber == 1:
-                sheet.cell(row="person's row",column="person's column").value = "OFF/LL"
+# # # #def leaveandoffs(who,whichdays):
+# # # for name in team:
+# # #     if name in list(whoandwhenpresent.keys()):
+# # #         for daynumber in whoandwhenpresent[name]:
+# # #             print(name + " is on leave for day " + str(daynumber))
+# # #             if daynumber == 1:
+# # #                 sheet.cell(row="person's row",column="person's column").value = "OFF/LL"
 
 #colour coding
 def colourthisrow(row,colour):
