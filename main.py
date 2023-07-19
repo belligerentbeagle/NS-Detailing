@@ -5,8 +5,8 @@ from openpyxl.styles import NamedStyle, Font, Border, Side, PatternFill, colors,
 from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.formatting.rule import ColorScaleRule, CellIsRule, FormulaRule
 
-storagelocation = "/Users/weiyushit/OneDrive/Github stuff/NS Detailing/hello_world.xlsx" ##CHANGE EXCEL EXPORT LOCATION
-# storagelocation = "hello_world.xlsx" #for mobile compiler
+#storagelocation = "/Users/weiyushit/OneDrive/Github stuff/NS Detailing/hello_world.xlsx" ##CHANGE EXCEL EXPORT LOCATION
+storagelocation = "hello_world.xlsx" #for mobile compiler
 
 ## CHANGE PEOPLE PRESENT #Absent
 batch0 = ["Aaron","Weijie"] #Max 
